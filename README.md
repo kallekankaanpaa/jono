@@ -19,3 +19,7 @@ queue.dequeue() //  "Second element"
 queue.dequeue() //  "Third element"
 queue.dequeue() //  undefined
 ```
+
+# License
+
+The project is licensed under the MIT license
