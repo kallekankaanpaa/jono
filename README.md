@@ -15,6 +15,8 @@ queue.dequeue() // "First element"
 
 queue.enqueue("Third element");
 
+queue.peek() // "Second element"
+
 queue.dequeue() //  "Second element"
 queue.dequeue() //  "Third element"
 queue.dequeue() //  undefined

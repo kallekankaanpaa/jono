@@ -1,0 +1,5 @@
+# Ignore typescript source files
+src/
+test/
+
+tsconfig.json

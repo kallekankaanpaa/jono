@@ -2,5 +2,8 @@
 node_modules/
 dist/
 
+# Ignore test packages
+jono*.tgz
+
 # IDE files
 .vscode/
