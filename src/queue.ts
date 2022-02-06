@@ -65,9 +65,10 @@ class Queue<T> {
         return this.#head?.item;
     }
 
-    *[Symbol.iterator]() {
+    *[Symbol.iterator](): Generator<T, void, unknown> {
         while (this.#head) {
-            yield this.dequeue();
+            // SAFETY: dequeue cannot return undefined when #head is defined
+            yield this.dequeue()!;
         }
         return;
     }
