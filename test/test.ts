@@ -2,53 +2,79 @@ import assert from 'assert';
 import Queue from '../src/index';
 
 describe('Queue', function () {
-    it('should work', function () {
-        const queue = new Queue('xd');
-        queue.enqueue('first in');
-        queue.enqueue('second in', 'third in');
-        assert.strictEqual(queue.dequeue(), 'xd');
-        assert.strictEqual(queue.dequeue(), 'first in');
-        assert.strictEqual(queue.dequeue(), 'second in');
-        assert.strictEqual(queue.dequeue(), 'third in');
-        queue.enqueue("asdf");
-        assert.strictEqual(queue.dequeue(), 'asdf');
-    });
-
-    it('has correct length', function () {
-        const queue = new Queue();
-        assert.strictEqual(queue.length, 0);
-        queue.dequeue();
-        assert.strictEqual(queue.length, 0);
-        queue.enqueue(0, 1, 2, 3, 4);
-        assert.strictEqual(queue.length, 5);
-        queue.dequeue();
-        assert.strictEqual(queue.length, 4);
-        queue.enqueue(5);
-        assert.strictEqual(queue.length, 5);
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue();
-        queue.dequeue();
-        assert.strictEqual(queue.length, 0);
-        queue.dequeue();
-        assert.strictEqual(queue.length, 0);
+    let queue: Queue<any>;
+    beforeEach(function () {
+        queue = new Queue();
     })
 
-    it('iterates', function () {
-        const queue = new Queue(0, 1, 2, 3, 4, 5, 6, 7, 8);
-        let count = 0;
-        for (const item of queue) {
-            assert.strictEqual(item, count);
-            count++;
-        }
-        assert.strictEqual(queue.length, 0);
+    describe('with 0 elements', function () {
+        it('should return undefiend on peek or dequeue', function () {
+            assert.strictEqual(queue.peek(), undefined);
+            assert.strictEqual(queue.dequeue(), undefined);
+        })
+
+        it('should iterate 0 times', function () {
+            // Can't use node calltracker to test this since it doesn't support testing 0 calls
+            let called = false;
+            for (const _ of queue) {
+                called = true;
+            }
+            assert.strictEqual(called, false);
+        })
+
+        it('should have length of 0', function () {
+            assert.strictEqual(queue.length, 0);
+        })
+
+        it('should have 0 length after dequeue', function () {
+            assert.strictEqual(queue.length, 0);
+            queue.dequeue();
+            assert.strictEqual(queue.length, 0);
+        })
     })
 
-    it('should return same value for both peek and dequeue', function () {
-        const queue = new Queue();
-        assert.strictEqual(queue.peek(), queue.dequeue())
-        queue.enqueue(1)
-        assert.strictEqual(queue.peek(), queue.dequeue())
+    describe('with four elements', function () {
+        beforeEach(function () {
+            queue.enqueue("First", "Second", "Third", "Fourth")
+        })
+
+        it('should dequeue elements according to the insertion order', function () {
+            assert.strictEqual(queue.dequeue(), "First");
+            assert.strictEqual(queue.dequeue(), "Second");
+            assert.strictEqual(queue.dequeue(), "Third");
+            assert.strictEqual(queue.dequeue(), "Fourth");
+        })
+
+        it('should peek first item only', function () {
+            assert.strictEqual(queue.peek(), "First");
+            assert.strictEqual(queue.peek(), "First");
+        })
+
+        it('should return same value for both peek and dequeue', function () {
+            assert.strictEqual(queue.peek(), queue.dequeue())
+            assert.strictEqual(queue.peek(), queue.dequeue())
+        })
+
+        it('should iterate over the elements', function () {
+            const callTracker = new assert.CallTracker();
+            const testFn = callTracker.calls(4);
+            for (const _ of queue) {
+                testFn();
+            }
+            callTracker.verify();
+        })
+    })
+
+    it('should increase length by one when enqueueing', function () {
+        const originalLength = queue.length;
+        queue.enqueue("")
+        assert.strictEqual(queue.length, originalLength + 1)
+    })
+
+    it('should decrease length by one when dequeueing', function () {
+        queue.enqueue("First");
+        const originalLength = queue.length;
+        queue.dequeue();
+        assert.strictEqual(queue.length, originalLength - 1)
     })
 });

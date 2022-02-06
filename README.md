@@ -9,11 +9,11 @@ The Queue is also iterable. Elements in the queue are dequeued as the queue is i
 ```js
 import Queue from 'jono'
 
-const queue = new Queue("First element", "Second element");
+const queue = new Queue("First element", "Second element")
 
 queue.dequeue() // "First element"
 
-queue.enqueue("Third element");
+queue.enqueue("Third element")
 
 queue.peek() // "Second element"
 
