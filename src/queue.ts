@@ -3,10 +3,18 @@ class Queue<T> {
     #tail: Node<T> | undefined;
     length = 0;
 
+    /**
+     * Constructs a queue with the provided items
+     * @param items Items to enqueue
+     */
     constructor(...items: T[]) {
         this.enqueue(...items);
     }
 
+    /**
+     * Enqueues provided items to the que in the order they are given to the function
+     * @param items Items to enqueue
+     */
     enqueue(...items: T[]): void {
         for (const item of items) {
             if (this.#tail === undefined) {
@@ -22,6 +30,10 @@ class Queue<T> {
         }
     }
 
+    /**
+     * Dequeues elements from the queue
+     * @returns the next element in the queue or undefined if queue is empty
+     */
     dequeue(): T | undefined {
         if (this.#head === undefined) {
             return undefined;

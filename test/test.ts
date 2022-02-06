@@ -43,6 +43,12 @@ describe('Queue', function () {
             count++;
         }
         assert.strictEqual(queue.length, 0);
+    })
 
+    it('should return same value for both peek and dequeue', function () {
+        const queue = new Queue();
+        assert.strictEqual(queue.peek(), queue.dequeue())
+        queue.enqueue(1)
+        assert.strictEqual(queue.peek(), queue.dequeue())
     })
 });
