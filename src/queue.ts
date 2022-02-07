@@ -1,6 +1,6 @@
 class Queue<T> {
-    #head: Node<T> | undefined;
-    #tail: Node<T> | undefined;
+    #head: Queue.Node<T> | undefined;
+    #tail: Queue.Node<T> | undefined;
     length = 0;
 
     /**
@@ -17,14 +17,12 @@ class Queue<T> {
      */
     enqueue(...items: T[]): void {
         for (const item of items) {
-            if (this.#tail === undefined) {
-                const first = { item, next: undefined, prev: undefined };
-                this.#tail = first;
-                this.#head = first;
+            if (!this.#tail) {
+                this.#tail = { item, next: undefined, prev: undefined };
+                this.#head = this.#tail;
             } else {
-                const newTail = { item, next: this.#tail, prev: undefined };
-                this.#tail.prev = newTail;
-                this.#tail = newTail;
+                this.#tail.prev = { item, next: this.#tail, prev: undefined };
+                this.#tail = this.#tail.prev;
             }
             this.length++;
         }
@@ -35,25 +33,23 @@ class Queue<T> {
      * @returns the next element in the queue or undefined if queue is empty
      */
     dequeue(): T | undefined {
-        if (this.#head === undefined) {
+        if (!this.#head) {
             return undefined;
-        } else if (this.#head.prev === undefined) {
-            const dequeued = this.#head.item;
+        }
 
+        const dequeued = this.#head.item;
+
+        if (!this.#head.prev) {
             this.#tail = undefined;
             this.#head = undefined;
-            this.length--;
-
-            return dequeued;
         } else {
-            const dequeued = this.#head.item;
-
             this.#head = this.#head.prev;
             this.#head.next = undefined;
-            this.length--;
-
-            return dequeued;
         }
+
+        this.length--;
+
+        return dequeued;
     }
 
     /**
@@ -74,10 +70,12 @@ class Queue<T> {
     }
 }
 
-interface Node<T> {
-    item: T;
-    next: Node<T> | undefined;
-    prev: Node<T> | undefined;
+namespace Queue {
+    export interface Node<T> {
+        item: T;
+        next: Node<T> | undefined;
+        prev: Node<T> | undefined;
+    }
 }
 
 export default Queue;
