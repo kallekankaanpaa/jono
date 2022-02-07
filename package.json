@@ -19,7 +19,9 @@
     },
     "homepage": "https://github.com/kallekankaanpaa/jono#readme",
     "license": "MIT",
-    "dependencies": {},
+    "dependencies": {
+        "tslib": "^2.3.1"
+    },
     "devDependencies": {
         "@types/mocha": "^9.1.0",
         "@types/node": "^17.0.15",
