@@ -1,6 +1,6 @@
 {
     "name": "jono",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Efficent queue implementation for browser and NodeJS",
     "type": "module",
     "main": "dist/index.js",
