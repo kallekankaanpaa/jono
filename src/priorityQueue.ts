@@ -3,7 +3,7 @@ class PriorityQueue<T> {
     #compareFn: PriorityQueue.CompareFn<T>;
     length = 0;
 
-    constructor(compareFn: PriorityQueue.CompareFn<T> = PriorityQueue.defaultCompare) {
+    constructor(compareFn: PriorityQueue.CompareFn<T> = defaultCompare) {
         this.#compareFn = compareFn;
     }
 
@@ -76,53 +76,51 @@ class PriorityQueue<T> {
 
         this.#heap[parent] = element;
     }
-
-
-    static defaultCompare<T>(x: T, y: T): number {
-        //INFO: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-        //ECMA specification: http://www.ecma-international.org/ecma-262/6.0/#sec-sortcompare
-
-        if (x === undefined && y === undefined)
-            return 0;
-
-        if (x === undefined)
-            return 1;
-
-        if (y === undefined)
-            return -1;
-
-        const xString = PriorityQueue.toString(x);
-        const yString = PriorityQueue.toString(y);
-
-        if (xString < yString)
-            return -1;
-
-        if (xString > yString)
-            return 1;
-
-        return 0;
-    };
-
-    static toString(obj: any): string {
-        //ECMA specification: http://www.ecma-international.org/ecma-262/6.0/#sec-tostring
-
-        if (obj === null)
-            return "null";
-
-        if (typeof obj === "boolean" || typeof obj === "number")
-            return (obj).toString();
-
-        if (typeof obj === "string")
-            return obj;
-
-        if (typeof obj === "symbol")
-            throw new TypeError();
-
-        //we know we have an object.
-        return (obj).toString();
-    };
 }
 
+function defaultCompare<T>(x: T, y: T): number {
+    //INFO: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    //ECMA specification: http://www.ecma-international.org/ecma-262/6.0/#sec-sortcompare
+
+    if (x === undefined && y === undefined)
+        return 0;
+
+    if (x === undefined)
+        return 1;
+
+    if (y === undefined)
+        return -1;
+
+    const xString = toString(x);
+    const yString = toString(y);
+
+    if (xString < yString)
+        return -1;
+
+    if (xString > yString)
+        return 1;
+
+    return 0;
+};
+
+function toString(obj: any): string {
+    //ECMA specification: http://www.ecma-international.org/ecma-262/6.0/#sec-tostring
+
+    if (obj === null)
+        return "null";
+
+    if (typeof obj === "boolean" || typeof obj === "number")
+        return (obj).toString();
+
+    if (typeof obj === "string")
+        return obj;
+
+    if (typeof obj === "symbol")
+        throw new TypeError();
+
+    //we know we have an object.
+    return (obj).toString();
+};
 
 namespace PriorityQueue {
     export interface Node<T> {
